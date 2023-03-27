@@ -47,7 +47,7 @@ $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
 );
-
+$app->register(Pearl\RequestValidate\RequestServiceProvider::class);
 /*
 |--------------------------------------------------------------------------
 | Register Config Files
