@@ -17,7 +17,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'user'], function () use ($router) {
         $router->post('register', ['uses' => 'AuthorController@store']);
         $router->post('sign-in', ['uses' => 'AuthorController@login']);
-        $router->post('recover-password', ['uses' => 'AuthorController@create']);
+        $router->post('recover-password', ['uses' => 'AuthorController@passwordRecover']);
         $router->get('companies',  ['uses' => 'AuthorController@showAllAuthors']);
         $router->post('companies', ['uses' => 'AuthorController@create']);
     });

@@ -94,4 +94,15 @@ class BaseRepository implements EloquentRepositoryInterface
         return $this->model->first();
     }
 
+    /**
+     * @param string $field_name
+     * @param $field_value
+     * @param string $operator
+     * @return Builder|null
+     */
+    public function where(string $field_name, $field_value, string $operator = '='): ?Builder
+    {
+        return $this->model->where($field_name, $operator, $field_value);
+    }
+
 }
