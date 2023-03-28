@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\LogoutRequest;
+use App\Http\Requests\RecoverPasswordRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Services\AuthService;
-use App\Services\UserService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -52,17 +54,52 @@ class AuthController extends Controller
             'email' => $request->get('email'),
             'password' => $request->get('password'),
         ]);
-        if ($login['status' == 'Success']) {
+        if ($login['status'] == 'Success') {
             return $this->responseSuccess('Success', ['user' => $login['body']]);
         }
-        return $this->responseUnauthorized($login['message']);
+        return $this->responseNotFound($login['message']);
     }
 
-    public function passwordRecover(Request $request)
+    /**
+     * @param RecoverPasswordRequest $request
+     * @return JsonResponse
+     */
+    public function passwordRecover(RecoverPasswordRequest $request): JsonResponse
     {
-        $user=$this->authService->passwordRecover([
-            'email'=>$request->get('email')
+        $reset = $this->authService->passwordRecover($request->get('email'));
+        if ($reset['status'] == 'Success') {
+            return $this->responseSuccess('Success', ['user' => $reset['body']]);
+        }
+        return $this->responseNotFound($reset['message']);
+    }
+
+    /**
+     * @param ResetPasswordRequest $request
+     * @return JsonResponse
+     */
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
+    {
+        $user = $this->authService->resetPassword([
+            'reset_email_token' => $request->get('reset_email_token'),
+            'password' => $request->get('new_password')
         ]);
+        if ($user['status'] == 'Success') {
+            return $this->responseSuccess('Success', ['user' => $user['body']]);
+        }
+        return $this->responseNotFound($user['message']);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $logout = $this->authService->logout($request->user->api_token);
+        if ($logout['status'] == 'Success') {
+            return $this->responseSuccess('Success', $logout['body']);
+        }
+        return $this->responseNotFound($logout['message']);
     }
 
 }

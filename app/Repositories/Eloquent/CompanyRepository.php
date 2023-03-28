@@ -3,11 +3,9 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Company;
-use App\Models\User;
-use App\Repositories\UserRepositoryInterface;
-use Illuminate\Support\Collection;
+use App\Repositories\CompanyRepositoryInterface;
 
-class CompanyRepository extends BaseRepository implements UserRepositoryInterface
+class CompanyRepository extends BaseRepository implements CompanyRepositoryInterface
 {
 
     /**

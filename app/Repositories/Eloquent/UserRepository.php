@@ -5,7 +5,6 @@ namespace App\Repositories\Eloquent;
 use App\Models\User;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -38,5 +37,34 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         $model->update(['api_token' => $token]);
         return $model;
+    }
+
+    /**
+     * @param $model
+     * @param $token
+     * @return Model
+     */
+    public function setEmailToken($model, $token): Model
+    {
+        $model->update(['reset_email_token' => $token]);
+        return $model;
+    }
+
+    /**
+     * @param $token
+     * @return Model|null
+     */
+    public function getByEmailToken($token): ?Model
+    {
+        return $this->where('reset_email_token', $token)->first();
+    }
+
+    /**
+     * @param $token
+     * @return Model|null
+     */
+    public function getByApiToken($token): ?Model
+    {
+        return $this->where('api_token', $token)->first();
     }
 }

@@ -27,8 +27,8 @@ class UserStoreRequest extends RequestAbstract
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string',
-            'password' => 'required|string',
+            'phone' => 'required|string|unique:users,phone',
+            'password' => 'required|string|min:6',
         ];
     }
 
@@ -40,7 +40,11 @@ class UserStoreRequest extends RequestAbstract
     public function messages(): array
     {
         return [
-
+            'first_name.required' => 'The first_name is required.',
+            'last_name.required' => 'The last_name is required.',
+            'email.required' => 'The email is required.',
+            'phone.required' => 'The phone is required.',
+            'password.required' => 'The password is required.',
         ];
     }
 }
